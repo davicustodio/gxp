@@ -191,6 +191,12 @@ gxp.plugins.AddLayers = Ext.extend(gxp.plugins.Tool, {
      *  The currently selected layer source.
      */
     selectedSource: null,
+    
+    /** embrapa
+     * define uma string para aplicar filtro nos nomes das layers
+     * usado para apresentar apenas layers desejadas na lista da table do addLayers
+     */
+    strFilter null, 
 
     /** private: method[constructor]
      */
@@ -359,6 +365,25 @@ gxp.plugins.AddLayers = Ext.extend(gxp.plugins.Tool, {
         }
 
         source = this.target.layerSources[data[idx][0]];
+        
+        // embrapa - filtra as layers pela strFilter
+    	if( this.strFilter ){
+			source.store.filter([
+					  {
+						property     : 'name',
+						value        : this.strFilter,
+						anyMatch     : true, //optional, defaults to true
+						caseSensitive: false //optional, defaults to true
+					  },
+					  //filter functions can also be passed
+					  {
+						fn   : function(record) {
+						  return true;
+						},
+						scope: this
+					  }
+			]);
+		}	
 
         var capGridPanel = new Ext.grid.GridPanel({
             store: source.store,
