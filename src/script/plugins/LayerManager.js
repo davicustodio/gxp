@@ -121,7 +121,7 @@ gxp.plugins.LayerManager = Ext.extend(gxp.plugins.LayerTree, {
 		}];
 		
 		
-		// original
+	// original
         /*if (legendXType) {
             Ext.apply(attr, {
                 component: {
