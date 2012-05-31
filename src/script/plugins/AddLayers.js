@@ -196,7 +196,7 @@ gxp.plugins.AddLayers = Ext.extend(gxp.plugins.Tool, {
      * define uma string para aplicar filtro nos nomes das layers
      * usado para apresentar apenas layers desejadas na lista da table do addLayers
      */
-    strFilter null, 
+    strFilter: null, 
 
     /** private: method[constructor]
      */
