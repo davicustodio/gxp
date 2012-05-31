@@ -83,7 +83,46 @@ gxp.plugins.LayerManager = Ext.extend(gxp.plugins.LayerTree, {
         } else if (OpenLayers.Layer.Vector && attr.layer instanceof OpenLayers.Layer.Vector) {
             legendXType = "gx_vectorlegend";
         }
-        if (legendXType) {
+    	
+		// embrapa
+		// para fazer com que o funcionamento da apresentação da legenda da layer não começe expandida
+		// tive que recorrer ao código da classe antiga da LayerManager que permite esconder a legenda
+		// na primeira vez queo nó é apresentado
+		
+		attr.expanded = false;
+		attr.allowDrop = false;
+		attr.children = [{
+			nodeType: "node",
+			cls: "legendnode",
+			uiProvider: Ext.extend(
+				Ext.tree.TreeNodeUI,
+				new GeoExt.tree.TreeNodeUIEventMixin()
+			),
+			component: {
+				xtype: legendXType,
+				// TODO these baseParams were only tested with GeoServer,
+				// so maybe they should be configurable.
+				baseParams: {
+					format: "image/png",
+					legend_options: "fontAntiAliasing:true;fontSize:11;fontName:Arial"
+				},
+				layerRecord: this.target.mapPanel.layers.getByLayer(attr.layer),
+				showTitle: false,
+				// custom class for css positioning
+				// see tree-legend.html
+				cls: "legend"
+			},
+			listeners: {
+				beforeclick: function() {
+					this.parentNode.select();
+					return false;
+				}
+			}
+		}];
+		
+		
+		// original
+        /*if (legendXType) {
             Ext.apply(attr, {
                 component: {
                     xtype: legendXType,
@@ -102,7 +141,7 @@ gxp.plugins.LayerManager = Ext.extend(gxp.plugins.LayerTree, {
                     cls: "legend"
                 }
             });
-        }
+        } */
     }
     
 });
